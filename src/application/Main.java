@@ -12,6 +12,10 @@ import com.jme3.system.AppSettings;
 
 public class Main extends SimpleApplication
 {
+    
+    /* STILL TO DO: characters, scenery, collision, equipment, abilities, objectives, audio
+    ** CONSIDER: more powerful spells require much longer to cast (speed-up by casting with an ally)
+    */
 
     public static void main(String[] args)
     {
@@ -59,13 +63,20 @@ public class Main extends SimpleApplication
             earth_g.setLocalTranslation(2.0f, -2.5f, 0.0f);
             rootNode.attachChild(earth_g);
             
-            // HUD
+            // Battle Info
             guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-            BitmapText hudTemp = new BitmapText(guiFont, false);
-            hudTemp.setSize(guiFont.getCharSet().getRenderedSize());
-            hudTemp.setText("Battlefield HUD Information");
-            hudTemp.setLocalTranslation(300, hudTemp.getLineHeight(), 0);
-            guiNode.attachChild(hudTemp);
+            BitmapText hudBattle = new BitmapText(guiFont, false);
+            hudBattle.setSize(guiFont.getCharSet().getRenderedSize());
+            hudBattle.setText("Battle Info");
+            hudBattle.setLocalTranslation(25, hudBattle.getLineHeight() + 25, 0);
+            guiNode.attachChild(hudBattle);
+            
+            // Player Info
+            BitmapText hudPlayer = new BitmapText(guiFont, false);
+            hudPlayer.setSize(guiFont.getCharSet().getRenderedSize());
+            hudPlayer.setText("Player Info");
+            hudPlayer.setLocalTranslation(1366 - (hudPlayer.getLineWidth() + 25), hudPlayer.getLineHeight() + 25, 0);
+            guiNode.attachChild(hudPlayer);
         }
     }
 
