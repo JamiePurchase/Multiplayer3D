@@ -18,6 +18,9 @@ public class Main extends SimpleApplication
     /* STILL TO DO: characters, custom input, scenery, collision, equipment, abilities, objectives, audio
     ** CONSIDER: more powerful spells require much longer to cast (speed-up by casting with an ally)
     */
+    
+    private int tempTick = 0;
+    BitmapText hudBattle;
 
     public static void main(String[] args)
     {
@@ -81,15 +84,22 @@ public class Main extends SimpleApplication
             Geometry wall_g01 = new Geometry("Wall01", new Box(5, 3, 1));
             Material wall_m = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
             wall_m.setTexture("ColorMap", assetManager.loadTexture("Textures/stone2.png"));
+            //wall_m.setTexture("ColorMap", assetManager.loadTexture("Textures/wood1(5x3).png"));
+            // NOTE: need thinner stripes of more similar colours to create palisade wall look
+            // ensure that only the front shows, as the texture is scaled awkwardly on the side
             wall_g01.setMaterial(wall_m);
             wall_g01.setLocalTranslation(4.0f, -2.5f, 0.0f);
             rootNode.attachChild(wall_g01);
             
+            Geometry wall_g02 = wall_g01.clone();
+            wall_g02.setLocalTranslation(-11.0f, -2.5f, 0.0f);
+            rootNode.attachChild(wall_g02);
+            
             // HUD: Battle Info
             guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-            BitmapText hudBattle = new BitmapText(guiFont, false);
+            hudBattle = new BitmapText(guiFont, false);
             hudBattle.setSize(guiFont.getCharSet().getRenderedSize());
-            hudBattle.setText("Battle Info");
+            hudBattle.setText("Battle Info (" + tempTick + ")");
             hudBattle.setLocalTranslation(25, hudBattle.getLineHeight() + 25, 0);
             guiNode.attachChild(hudBattle);
             
@@ -117,12 +127,16 @@ public class Main extends SimpleApplication
     @Override
     public void simpleUpdate(float tpf)
     {
-        //TODO: add update code
+        tempTick += 1;
+        super.simpleUpdate(tpf);
     }
 
     @Override
     public void simpleRender(RenderManager rm)
     {
-        //TODO: add render code
+        // NOTE: this is required to update the hud (not dry; needs an update function)
+        // this also needs to be wrapped in the condition that we're in the battle state
+        hudBattle.setText("Battle Info (" + tempTick + ")");
+        super.simpleRender(rm);
     }
 }
